@@ -1,0 +1,20 @@
+{
+  "name": "openai-chrome-agent",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Pollinations + Chrome (Playwright) agent",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node src/main.js --mode cli",
+    "telegram": "node src/main.js --mode telegram",
+    "postinstall": "playwright install chromium"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "playwright": "^1.54.0"
+  }
+}
