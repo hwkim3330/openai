@@ -7,6 +7,8 @@ const files = [
   'src/chromeAdapter.js',
   'src/rpaFallback.js',
   'src/agi/loop.js',
+  'src/agi/evaluator.js',
+  'src/agi/improver.js',
   'src/runtime/engine.js',
   'src/freeapis/http.js',
   'src/freeapis/stocks.js',

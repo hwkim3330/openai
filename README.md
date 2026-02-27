@@ -6,7 +6,7 @@ Node.js + Playwright + Telegram로 구성되며, GitHub Pages 정적 비서 UI�
 ## What you get
 - CLI assistant
 - Telegram assistant (allowlist/prefix/lock security)
-- AGI loop mode (goal -> action -> execute -> memory)
+- AGI loop mode (goal -> action -> execute -> score -> self-improve proposal -> promote/rollback)
 - Browser automation command (`browse:`)
 - Free no-key tools:
   - `weather:` (Open-Meteo)

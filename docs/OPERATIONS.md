@@ -46,6 +46,16 @@ Tune in `.env`:
 - `AGI_INTERVAL_SEC`
 - `AGI_MAX_MEMORY`
 - `AGI_DRY_RUN`
+- `AGI_ENABLE_SELF_IMPROVE`
+- `AGI_IMPROVE_EVERY_CYCLES`
+- `AGI_MIN_ACCEPT_SCORE`
+- `AGI_ROLLBACK_DROP`
+- `AGI_TRIAL_COMMAND`
+
+Self-improve behavior:
+- every `AGI_IMPROVE_EVERY_CYCLES`, the loop generates a compact proposal
+- candidate changes are trial-run with `AGI_TRIAL_COMMAND`
+- if trial score is below threshold, automatic rollback is applied
 
 ## Common failures
 - Telegram no response:
