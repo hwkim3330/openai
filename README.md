@@ -3,6 +3,17 @@
 OpenClaw 스타일의 경량 구조(`channels/providers/runtime/adapters`)를 따르는 Node.js 에이전트.
 기본은 무료/무키 API로 바로 동작한다.
 
+## GitHub Pages (무료 웹 비서)
+- 정적 페이지 위치: `docs/index.html`
+- 배포 워크플로우: `.github/workflows/pages.yml`
+- 배포 후 URL: `https://hwkim3330.github.io/openai/`
+
+Pages 기능:
+- Pollinations AI 채팅
+- Open-Meteo 날씨
+- OSM/OSRM 길찾기 + 지도 열기
+- CoinGecko 코인 시세
+
 ## Core stack
 - Node.js 18+
 - Pollinations text API (no login, no API key)

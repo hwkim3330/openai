@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OpenAI Free Assistant</title>
+    <style>
+      :root {
+        --bg: #0f172a;
+        --panel: #111827;
+        --card: #1f2937;
+        --ink: #e5e7eb;
+        --muted: #94a3b8;
+        --brand: #22c55e;
+        --brand2: #0ea5e9;
+        --danger: #ef4444;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: "Pretendard", "Noto Sans KR", system-ui, sans-serif;
+        background: radial-gradient(1200px 600px at 20% -10%, #1e293b 0%, #0f172a 60%);
+        color: var(--ink);
+      }
+      .wrap {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .hero {
+        background: linear-gradient(135deg, #0b1220 0%, #111827 60%, #0f1d30 100%);
+        border: 1px solid #263247;
+        border-radius: 16px;
+        padding: 20px;
+      }
+      .hero h1 {
+        margin: 0;
+        font-size: 28px;
+      }
+      .hero p {
+        margin: 8px 0 0;
+        color: var(--muted);
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr;
+        gap: 16px;
+        margin-top: 16px;
+      }
+      .card {
+        background: var(--panel);
+        border: 1px solid #273549;
+        border-radius: 14px;
+        padding: 14px;
+      }
+      .card h2 {
+        margin: 0 0 10px;
+        font-size: 16px;
+      }
+      .muted { color: var(--muted); font-size: 13px; }
+      .row { display: flex; gap: 8px; }
+      input, textarea, button, select {
+        border-radius: 10px;
+        border: 1px solid #334155;
+        background: var(--card);
+        color: var(--ink);
+        padding: 10px;
+      }
+      input, textarea { width: 100%; }
+      textarea { min-height: 90px; resize: vertical; }
+      button {
+        cursor: pointer;
+        font-weight: 700;
+        border-color: #275a3a;
+        background: linear-gradient(180deg, #22c55e, #16a34a);
+        color: #08130c;
+      }
+      button.secondary {
+        border-color: #1d4d65;
+        background: linear-gradient(180deg, #38bdf8, #0284c7);
+        color: #03131a;
+      }
+      button.warn {
+        border-color: #7f1d1d;
+        background: linear-gradient(180deg, #f87171, #dc2626);
+        color: #1b0505;
+      }
+      .out {
+        margin-top: 8px;
+        background: #0b1220;
+        border: 1px solid #1f2a3b;
+        border-radius: 10px;
+        padding: 10px;
+        white-space: pre-wrap;
+        min-height: 100px;
+      }
+      .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+      .chip {
+        font-size: 12px;
+        background: #0b1220;
+        border: 1px solid #334155;
+        border-radius: 999px;
+        padding: 4px 10px;
+        color: #93c5fd;
+      }
+      .footer {
+        margin-top: 16px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      @media (max-width: 900px) {
+        .grid { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <section class="hero">
+        <h1>OpenAI Free Assistant</h1>
+        <p>무료/무키 API만으로 동작하는 웹 비서. AI 채팅 + 날씨 + 길찾기 + 코인 시세.</p>
+        <div class="chips">
+          <span class="chip">Pollinations Text</span>
+          <span class="chip">Open-Meteo</span>
+          <span class="chip">OSRM + OSM</span>
+          <span class="chip">CoinGecko</span>
+        </div>
+      </section>
+
+      <section class="grid">
+        <article class="card">
+          <h2>AI 채팅 (Pollinations)</h2>
+          <div class="muted">완전 무료. 모델별 제한 가능성 있음.</div>
+          <textarea id="aiPrompt" placeholder="물어볼 내용을 입력하세요"></textarea>
+          <div class="row" style="margin-top:8px;">
+            <button id="aiRun">답변 받기</button>
+            <button class="warn" id="aiClear">지우기</button>
+          </div>
+          <div id="aiOut" class="out">대기 중...</div>
+        </article>
+
+        <article class="card">
+          <h2>날씨 (Open-Meteo)</h2>
+          <input id="weatherQ" placeholder="예: Seoul 또는 37.56,126.97" />
+          <div class="row" style="margin-top:8px;">
+            <button class="secondary" id="weatherRun">조회</button>
+          </div>
+          <div id="weatherOut" class="out">대기 중...</div>
+        </article>
+
+        <article class="card">
+          <h2>길찾기/네비 (OSRM)</h2>
+          <input id="fromQ" placeholder="출발지 (예: Seoul Station)" />
+          <input id="toQ" style="margin-top:8px;" placeholder="도착지 (예: Incheon Airport)" />
+          <div class="row" style="margin-top:8px;">
+            <button class="secondary" id="routeRun">경로 조회</button>
+            <button id="routeMap">지도 열기</button>
+          </div>
+          <div id="routeOut" class="out">대기 중...</div>
+        </article>
+
+        <article class="card">
+          <h2>코인 시세 (CoinGecko)</h2>
+          <input id="coinQ" placeholder="예: bitcoin,ethereum,solana" />
+          <div class="row" style="margin-top:8px;">
+            <button class="secondary" id="coinRun">조회</button>
+          </div>
+          <div id="coinOut" class="out">대기 중...</div>
+        </article>
+      </section>
+
+      <div class="footer">
+        GitHub Pages 배포용 문서. 키 없이 시작 가능, 고급 기능은 서버 모드(Node)에서 확장 권장.
+      </div>
+    </div>
+
+    <script>
+      const $ = (id) => document.getElementById(id);
+      const setOut = (id, text) => { $(id).textContent = text; };
+
+      async function getJson(url, options = {}, timeoutMs = 20000) {
+        const controller = new AbortController();
+        const t = setTimeout(() => controller.abort(), timeoutMs);
+        try {
+          const res = await fetch(url, { ...options, signal: controller.signal });
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return await res.json();
+        } finally {
+          clearTimeout(t);
+        }
+      }
+
+      function parseLatLon(raw) {
+        const m = raw.trim().match(/^(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)$/);
+        if (!m) return null;
+        return { lat: Number(m[1]), lon: Number(m[2]), name: `${m[1]},${m[2]}` };
+      }
+
+      async function geocodeOpenMeteo(q) {
+        const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q)}&count=1&language=ko&format=json`;
+        const j = await getJson(url);
+        const g = j?.results?.[0];
+        if (!g) throw new Error("위치를 찾지 못함");
+        return { lat: g.latitude, lon: g.longitude, name: `${g.name}${g.country ? `, ${g.country}` : ""}` };
+      }
+
+      async function geocodeOSM(q) {
+        const url = `https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=${encodeURIComponent(q)}`;
+        const j = await getJson(url, { headers: { "Accept-Language": "ko,en" } });
+        const g = j?.[0];
+        if (!g) throw new Error(`위치를 찾지 못함: ${q}`);
+        return { lat: Number(g.lat), lon: Number(g.lon), name: g.display_name };
+      }
+
+      $("aiRun").onclick = async () => {
+        const prompt = $("aiPrompt").value.trim();
+        if (!prompt) return setOut("aiOut", "질문을 입력하세요.");
+        setOut("aiOut", "요청 중...");
+        try {
+          const system = "You are a concise Korean assistant.";
+          const payload = encodeURIComponent(`${system}\n\nUser: ${prompt}\nAssistant:`);
+          const res = await fetch(`https://text.pollinations.ai/prompt/${payload}`);
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const text = (await res.text()).trim();
+          setOut("aiOut", text || "응답 없음");
+        } catch (e) {
+          setOut("aiOut", `실패: ${e.message}`);
+        }
+      };
+
+      $("aiClear").onclick = () => setOut("aiOut", "대기 중...");
+
+      $("weatherRun").onclick = async () => {
+        const q = $("weatherQ").value.trim();
+        if (!q) return setOut("weatherOut", "위치를 입력하세요.");
+        setOut("weatherOut", "조회 중...");
+        try {
+          const loc = parseLatLon(q) || (await geocodeOpenMeteo(q));
+          const p = new URLSearchParams({
+            latitude: String(loc.lat),
+            longitude: String(loc.lon),
+            current: "temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,wind_speed_10m",
+            timezone: "auto"
+          });
+          const j = await getJson(`https://api.open-meteo.com/v1/forecast?${p.toString()}`);
+          const c = j.current;
+          setOut("weatherOut", `${loc.name}\n기온: ${c.temperature_2m}°C (체감 ${c.apparent_temperature}°C)\n습도: ${c.relative_humidity_2m}% | 강수: ${c.precipitation}mm\n풍속: ${c.wind_speed_10m}km/h | 코드: ${c.weather_code}`);
+        } catch (e) {
+          setOut("weatherOut", `실패: ${e.message}`);
+        }
+      };
+
+      let lastRoute = null;
+      $("routeRun").onclick = async () => {
+        const from = $("fromQ").value.trim();
+        const to = $("toQ").value.trim();
+        if (!from || !to) return setOut("routeOut", "출발/도착을 모두 입력하세요.");
+        setOut("routeOut", "경로 계산 중...");
+        try {
+          const a = await geocodeOSM(from);
+          const b = await geocodeOSM(to);
+          lastRoute = { a, b };
+          const url = `https://router.project-osrm.org/route/v1/driving/${a.lon},${a.lat};${b.lon},${b.lat}?overview=false&alternatives=false&steps=false`;
+          const j = await getJson(url, {}, 25000);
+          const r = j?.routes?.[0];
+          if (!r) throw new Error("경로 없음");
+          const dist = r.distance >= 1000 ? `${(r.distance/1000).toFixed(1)} km` : `${Math.round(r.distance)} m`;
+          const mins = Math.round(r.duration/60);
+          setOut("routeOut", `출발: ${a.name}\n도착: ${b.name}\n거리: ${dist}\n예상시간: ${mins}분\n(무료 OSRM 추정)`);
+        } catch (e) {
+          setOut("routeOut", `실패: ${e.message}`);
+        }
+      };
+
+      $("routeMap").onclick = () => {
+        if (!lastRoute) return setOut("routeOut", "먼저 경로를 조회하세요.");
+        const { a, b } = lastRoute;
+        const url = `https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=${a.lat}%2C${a.lon}%3B${b.lat}%2C${b.lon}`;
+        window.open(url, "_blank");
+      };
+
+      $("coinRun").onclick = async () => {
+        const raw = $("coinQ").value.trim();
+        if (!raw) return setOut("coinOut", "코인 ID를 입력하세요. 예: bitcoin,ethereum");
+        setOut("coinOut", "조회 중...");
+        try {
+          const ids = raw.split(",").map(x => x.trim().toLowerCase()).filter(Boolean).slice(0, 10);
+          const url = `https://api.coingecko.com/api/v3/simple/price?ids=${encodeURIComponent(ids.join(","))}&vs_currencies=usd,krw&include_24hr_change=true`;
+          const j = await getJson(url, {}, 20000);
+          const lines = ids.map((id) => {
+            const r = j[id];
+            if (!r) return `${id}: 데이터 없음`;
+            const ch = typeof r.usd_24h_change === "number" ? `${r.usd_24h_change.toFixed(2)}%` : "-";
+            return `${id}: $${r.usd ?? "-"} | ₩${r.krw ?? "-"} | 24h ${ch}`;
+          });
+          setOut("coinOut", lines.join("\n"));
+        } catch (e) {
+          setOut("coinOut", `실패: ${e.message}`);
+        }
+      };
+    </script>
+  </body>
+</html>
