@@ -12,6 +12,10 @@
 - `stock: <sym1,sym2,...>`
   - daily quote via Stooq (`aapl.us` style recommended)
 
+## AGI runtime command
+- `npm run agi`
+  - starts autonomous loop (goal -> action -> execution -> memory)
+
 ## Telegram examples
 If prefix is `!`:
 - `!help`

@@ -6,6 +6,7 @@ Node.js + Playwright + Telegram로 구성되며, GitHub Pages 정적 비서 UI�
 ## What you get
 - CLI assistant
 - Telegram assistant (allowlist/prefix/lock security)
+- AGI loop mode (goal -> action -> execute -> memory)
 - Browser automation command (`browse:`)
 - Free no-key tools:
   - `weather:` (Open-Meteo)
@@ -29,11 +30,21 @@ Telegram one-click:
 - Linux/macOS: `bash scripts/oneclick.sh telegram`
 - Windows: `powershell -ExecutionPolicy Bypass -File .\scripts\oneclick.ps1 telegram`
 
+AGI one-click:
+- `npm run quickstart:agi`
+
 Run as background worker (Linux/macOS):
 ```bash
 npm run run:telegram:bg
 npm run logs:telegram
 npm run stop:telegram:bg
+```
+
+AGI background worker (Linux/macOS):
+```bash
+npm run run:agi:bg
+npm run logs:agi
+npm run stop:agi:bg
 ```
 
 ## Basic commands

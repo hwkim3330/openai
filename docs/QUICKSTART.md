@@ -32,3 +32,8 @@ npm run telegram
 - `stock: AAPL,MSFT`
 - `browse: https://pollinations.ai`
 - `help`
+
+## 4) AGI loop (optional)
+```bash
+npm run agi
+```

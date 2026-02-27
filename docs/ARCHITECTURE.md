@@ -8,6 +8,7 @@
 - `src/freeapis/*`: no-key tool APIs
 - `src/channels/cli/runner.js`: local CLI channel
 - `src/channels/telegram/bridge.js`: Telegram channel
+- `src/agi/loop.js`: autonomous loop (goal/plan/execute/memory)
 
 ## Command routing
 1. parse prefix command (`browse:`, `weather:`, `traffic:`, `stock:`)

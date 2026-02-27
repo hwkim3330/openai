@@ -24,6 +24,29 @@ PID file:
 Log file:
 - `logs/telegram.log`
 
+## AGI loop mode
+Run foreground:
+```bash
+npm run agi
+```
+
+Run background:
+```bash
+npm run run:agi:bg
+npm run logs:agi
+npm run stop:agi:bg
+```
+
+AGI files:
+- state: `logs/agi-state.json`
+- log: `logs/agi.log`
+
+Tune in `.env`:
+- `AGI_GOALS`
+- `AGI_INTERVAL_SEC`
+- `AGI_MAX_MEMORY`
+- `AGI_DRY_RUN`
+
 ## Common failures
 - Telegram no response:
   - check token

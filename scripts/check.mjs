@@ -6,6 +6,7 @@ const files = [
   'src/pollinations.js',
   'src/chromeAdapter.js',
   'src/rpaFallback.js',
+  'src/agi/loop.js',
   'src/runtime/engine.js',
   'src/freeapis/http.js',
   'src/freeapis/stocks.js',

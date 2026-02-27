@@ -4,6 +4,7 @@ import { ChromeAdapter } from './chromeAdapter.js';
 import { RuntimeEngine } from './runtime/engine.js';
 import { TelegramBridge } from './channels/telegram/bridge.js';
 import { runCli } from './channels/cli/runner.js';
+import { runAgiLoop } from './agi/loop.js';
 
 const args = process.argv.slice(2);
 const modeIdx = args.findIndex((a) => a === '--mode');
@@ -14,6 +15,11 @@ const chrome = new ChromeAdapter(config.browser);
 const runtime = new RuntimeEngine({ ai, chrome });
 
 const run = async () => {
+  if (mode === 'agi') {
+    await runAgiLoop();
+    return;
+  }
+
   if (mode === 'telegram') {
     if (!config.telegram.token) {
       throw new Error('TELEGRAM_BOT_TOKEN is required for --mode telegram');
