@@ -6,6 +6,14 @@ export class PollinationsClient {
     this.lastRequestTs = 0;
   }
 
+  getSystemPrompt() {
+    return this.cfg.systemPrompt || '';
+  }
+
+  setSystemPrompt(nextPrompt) {
+    this.cfg.systemPrompt = String(nextPrompt || '');
+  }
+
   async rateLimit() {
     const now = Date.now();
     const wait = this.cfg.minIntervalMs - (now - this.lastRequestTs);

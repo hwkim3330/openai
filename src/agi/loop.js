@@ -1,9 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { config } from '../config.js';
-import { PollinationsClient } from '../pollinations.js';
-import { ChromeAdapter } from '../chromeAdapter.js';
-import { RuntimeEngine } from '../runtime/engine.js';
 import { evaluateExecution, averageScore } from './evaluator.js';
 import { proposeImprovement, applyProposal } from './improver.js';
 
@@ -215,7 +212,7 @@ const maybeImprove = async ({ ai, runtime, cfg, state }) => {
     strategy: { ...state.strategy },
     goals: [...state.goals],
     intervalSec: cfg.intervalSec,
-    modelSystemPrompt: ai.cfg.systemPrompt
+    modelSystemPrompt: typeof ai.getSystemPrompt === 'function' ? ai.getSystemPrompt() : state.strategy.systemPrompt
   };
 
   const next = applyProposal({
@@ -228,7 +225,9 @@ const maybeImprove = async ({ ai, runtime, cfg, state }) => {
   state.strategy = next.nextStrategy;
   state.goals = next.nextGoals;
   cfg.intervalSec = next.nextCfg.intervalSec;
-  ai.cfg.systemPrompt = state.strategy.systemPrompt;
+  if (typeof ai.setSystemPrompt === 'function') {
+    ai.setSystemPrompt(state.strategy.systemPrompt);
+  }
 
   let trialScore = 0;
   let trialResult = '';
@@ -253,7 +252,9 @@ const maybeImprove = async ({ ai, runtime, cfg, state }) => {
     state.strategy = snapshot.strategy;
     state.goals = snapshot.goals;
     cfg.intervalSec = snapshot.intervalSec;
-    ai.cfg.systemPrompt = snapshot.modelSystemPrompt;
+    if (typeof ai.setSystemPrompt === 'function') {
+      ai.setSystemPrompt(snapshot.modelSystemPrompt);
+    }
   }
 
   const improvementRecord = {
@@ -280,15 +281,12 @@ const maybeImprove = async ({ ai, runtime, cfg, state }) => {
   appendLog(cfg.logFile, '---');
 };
 
-export const runAgiLoop = async () => {
+export const runAgiLoop = async ({ ai, runtime }) => {
   const cfg = getAgiConfig();
   const state = loadState(cfg.stateFile);
-
-  const ai = new PollinationsClient(config.pollinations);
-  ai.cfg.systemPrompt = state.strategy.systemPrompt || ai.cfg.systemPrompt;
-
-  const chrome = new ChromeAdapter(config.browser);
-  const runtime = new RuntimeEngine({ ai, chrome });
+  if (typeof ai.setSystemPrompt === 'function') {
+    ai.setSystemPrompt(state.strategy.systemPrompt || config.pollinations.systemPrompt);
+  }
 
   appendLog(
     cfg.logFile,

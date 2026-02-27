@@ -2,8 +2,10 @@
 
 ## Runtime layers
 - `src/main.js`: entrypoint + mode select
+- `src/aiFactory.js`: AI provider selector (ollama/pollinations/auto)
 - `src/runtime/engine.js`: command router
 - `src/pollinations.js`: LLM provider client
+- `src/ollama.js`: local Ollama provider client
 - `src/chromeAdapter.js`: Playwright browser adapter
 - `src/freeapis/*`: no-key tool APIs
 - `src/channels/cli/runner.js`: local CLI channel

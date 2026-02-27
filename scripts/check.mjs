@@ -3,7 +3,9 @@ import { execFileSync } from 'node:child_process';
 const files = [
   'src/main.js',
   'src/config.js',
+  'src/aiFactory.js',
   'src/pollinations.js',
+  'src/ollama.js',
   'src/chromeAdapter.js',
   'src/rpaFallback.js',
   'src/agi/loop.js',

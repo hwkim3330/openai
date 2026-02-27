@@ -8,11 +8,20 @@ const asBool = (value, defaultValue = true) => {
 };
 
 export const config = {
+  ai: {
+    provider: process.env.AI_PROVIDER || "auto"
+  },
   pollinations: {
     model: process.env.POLLINATIONS_MODEL || "openai-large",
     systemPrompt: process.env.POLLINATIONS_SYSTEM_PROMPT || "You are a concise assistant.",
     timeoutMs: Number(process.env.POLLINATIONS_TIMEOUT_MS || 45000),
     minIntervalMs: Number(process.env.POLLINATIONS_MIN_INTERVAL_MS || 15000)
+  },
+  ollama: {
+    host: process.env.OLLAMA_HOST || "http://127.0.0.1:11434",
+    model: process.env.OLLAMA_MODEL || "qwen2.5:1.5b",
+    systemPrompt: process.env.OLLAMA_SYSTEM_PROMPT || "You are a concise assistant.",
+    timeoutMs: Number(process.env.OLLAMA_TIMEOUT_MS || 45000)
   },
   telegram: {
     token: process.env.TELEGRAM_BOT_TOKEN || "",

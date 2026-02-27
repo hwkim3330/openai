@@ -11,6 +11,16 @@ npm run check
 npm run smoke
 ```
 
+## AI provider selection
+Set in `.env`:
+- `AI_PROVIDER=auto|ollama|pollinations`
+- `OLLAMA_HOST`
+- `OLLAMA_MODEL`
+
+`auto` behavior:
+- if Ollama is reachable, use local model
+- otherwise fallback to Pollinations
+
 ## Run now (daemon style)
 ```bash
 npm run run:telegram:bg

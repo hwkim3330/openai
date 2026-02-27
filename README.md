@@ -2,6 +2,7 @@
 
 무료/무키 API 기반 개인 비서 런타임.
 Node.js + Playwright + Telegram로 구성되며, GitHub Pages 정적 비서 UI도 포함.
+AI provider는 `Ollama(로컬)` 또는 `Pollinations(무료)`를 사용.
 
 ## What you get
 - CLI assistant
@@ -32,6 +33,17 @@ Telegram one-click:
 
 AGI one-click:
 - `npm run quickstart:agi`
+
+## AI provider
+`.env`:
+```env
+AI_PROVIDER=auto
+OLLAMA_MODEL=qwen2.5:1.5b
+```
+
+- `auto`: Ollama 가능하면 로컬 사용, 아니면 Pollinations 자동 폴백
+- `ollama`: 로컬 모델 강제
+- `pollinations`: 무료 원격 모델 강제
 
 Run as background worker (Linux/macOS):
 ```bash

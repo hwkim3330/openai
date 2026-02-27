@@ -1,10 +1,10 @@
 import { RuntimeEngine } from '../src/runtime/engine.js';
-import { PollinationsClient } from '../src/pollinations.js';
 import { ChromeAdapter } from '../src/chromeAdapter.js';
 import { config } from '../src/config.js';
+import { createAiClient } from '../src/aiFactory.js';
 
 const rt = new RuntimeEngine({
-  ai: new PollinationsClient(config.pollinations),
+  ai: createAiClient(config),
   chrome: new ChromeAdapter(config.browser)
 });
 

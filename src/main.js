@@ -1,22 +1,22 @@
 import { config } from './config.js';
-import { PollinationsClient } from './pollinations.js';
 import { ChromeAdapter } from './chromeAdapter.js';
 import { RuntimeEngine } from './runtime/engine.js';
 import { TelegramBridge } from './channels/telegram/bridge.js';
 import { runCli } from './channels/cli/runner.js';
 import { runAgiLoop } from './agi/loop.js';
+import { createAiClient } from './aiFactory.js';
 
 const args = process.argv.slice(2);
 const modeIdx = args.findIndex((a) => a === '--mode');
 const mode = modeIdx >= 0 ? args[modeIdx + 1] : 'cli';
 
-const ai = new PollinationsClient(config.pollinations);
+const ai = createAiClient(config);
 const chrome = new ChromeAdapter(config.browser);
 const runtime = new RuntimeEngine({ ai, chrome });
 
 const run = async () => {
   if (mode === 'agi') {
-    await runAgiLoop();
+    await runAgiLoop({ ai, runtime });
     return;
   }
 
