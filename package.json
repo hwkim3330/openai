@@ -13,6 +13,9 @@
     "quickstart:telegram": "npm run setup:env && npm run telegram",
     "check": "node scripts/check.mjs",
     "smoke": "node scripts/smoke.mjs",
+    "run:telegram:bg": "bash scripts/run-telegram-bg.sh",
+    "stop:telegram:bg": "bash scripts/stop-telegram-bg.sh",
+    "logs:telegram": "bash scripts/logs-telegram.sh",
     "postinstall": "playwright install chromium"
   },
   "engines": {

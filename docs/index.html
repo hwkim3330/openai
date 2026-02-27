@@ -124,6 +124,11 @@
           <span class="chip">OSRM + OSM</span>
           <span class="chip">CoinGecko</span>
         </div>
+        <div class="chips" style="margin-top:10px;">
+          <button class="chip" id="presetWeather" style="cursor:pointer;">weather: Seoul</button>
+          <button class="chip" id="presetRoute" style="cursor:pointer;">traffic: Seoul Station -> Incheon Airport</button>
+          <button class="chip" id="presetStock" style="cursor:pointer;">stock: aapl.us,msft.us</button>
+        </div>
       </section>
 
       <section class="grid">
@@ -176,6 +181,7 @@
     <script>
       const $ = (id) => document.getElementById(id);
       const setOut = (id, text) => { $(id).textContent = text; };
+      const setPrompt = (text) => { $("aiPrompt").value = text; $("aiPrompt").focus(); };
 
       async function getJson(url, options = {}, timeoutMs = 20000) {
         const controller = new AbortController();
@@ -228,6 +234,12 @@
       };
 
       $("aiClear").onclick = () => setOut("aiOut", "대기 중...");
+      $("presetWeather").onclick = () => setPrompt("서울 오늘 날씨 요약해줘");
+      $("presetRoute").onclick = () => {
+        $("fromQ").value = "Seoul Station";
+        $("toQ").value = "Incheon Airport";
+      };
+      $("presetStock").onclick = () => setPrompt("AAPL과 MSFT 최근 흐름 짧게 비교해줘");
 
       $("weatherRun").onclick = async () => {
         const q = $("weatherQ").value.trim();

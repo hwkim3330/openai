@@ -29,6 +29,13 @@ Telegram one-click:
 - Linux/macOS: `bash scripts/oneclick.sh telegram`
 - Windows: `powershell -ExecutionPolicy Bypass -File .\scripts\oneclick.ps1 telegram`
 
+Run as background worker (Linux/macOS):
+```bash
+npm run run:telegram:bg
+npm run logs:telegram
+npm run stop:telegram:bg
+```
+
 ## Basic commands
 - `help`
 - `weather: Seoul`
