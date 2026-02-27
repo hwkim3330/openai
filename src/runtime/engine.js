@@ -2,6 +2,22 @@ import { getStockQuote } from '../freeapis/stocks.js';
 import { getWeather } from '../freeapis/weather.js';
 import { getTraffic } from '../freeapis/traffic.js';
 
+const HELP_TEXT = [
+  '[HELP]',
+  'Commands:',
+  '- help',
+  '- browse: <url>',
+  '- weather: <city|lat,lon>',
+  '- traffic: <from> -> <to>',
+  '- stock: <sym1,sym2,...>',
+  '',
+  'Examples:',
+  '- weather: Seoul',
+  '- traffic: Seoul Station -> Incheon Airport',
+  '- stock: aapl.us,msft.us',
+  '- browse: https://pollinations.ai'
+].join('\n');
+
 export class RuntimeEngine {
   constructor({ ai, chrome }) {
     this.ai = ai;
@@ -11,6 +27,10 @@ export class RuntimeEngine {
   async handle(input) {
     const text = input.trim();
     const lower = text.toLowerCase();
+
+    if (lower === 'help' || lower === '/help') {
+      return HELP_TEXT;
+    }
 
     if (lower.startsWith('browse:')) {
       const target = text.slice('browse:'.length).trim();

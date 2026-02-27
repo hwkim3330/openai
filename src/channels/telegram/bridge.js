@@ -86,6 +86,11 @@ export class TelegramBridge {
             );
             continue;
           }
+          if (rawText.startsWith('/help')) {
+            const answer = await this.runtime.handle('help');
+            await this.send(chatId, answer);
+            continue;
+          }
 
           const text = this.normalizeInboundText(rawText);
           if (!text) continue;

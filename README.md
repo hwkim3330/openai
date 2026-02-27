@@ -1,44 +1,27 @@
-# OpenAI (Node.js Pollinations + Chrome Agent)
+# OpenAI Free Assistant
 
-OpenClaw 스타일의 경량 구조(`channels/providers/runtime/adapters`)를 따르는 Node.js 에이전트.
-기본은 무료/무키 API로 바로 동작한다.
+무료/무키 API 기반 개인 비서 런타임.
+Node.js + Playwright + Telegram로 구성되며, GitHub Pages 정적 비서 UI도 포함.
 
-## GitHub Pages (무료 웹 비서)
-- 정적 페이지 위치: `docs/index.html`
-- 배포 워크플로우: `.github/workflows/pages.yml`
-- 배포 후 URL: `https://hwkim3330.github.io/openai/`
+## What you get
+- CLI assistant
+- Telegram assistant (allowlist/prefix/lock security)
+- Browser automation command (`browse:`)
+- Free no-key tools:
+  - `weather:` (Open-Meteo)
+  - `traffic:` (OSM Nominatim + OSRM)
+  - `stock:` (Stooq daily quotes)
+- GitHub Pages web assistant (`docs/index.html`)
 
-Pages 기능:
-- Pollinations AI 채팅
-- Open-Meteo 날씨
-- OSM/OSRM 길찾기 + 지도 열기
-- CoinGecko 코인 시세
-
-## Core stack
-- Node.js 18+
-- Pollinations text API (no login, no API key)
-- Playwright (Chromium)
-- Telegram Bot API (optional)
-
-## Free built-in tools
-- `stock:` Yahoo Finance public quote endpoint (no-key)
-- `weather:` Open-Meteo geocoding/forecast (no-key)
-- `traffic:` OSM Nominatim + OSRM route ETA (no-key)
-- `browse:` Playwright browser text extraction
-
-## One-click start (recommended)
+## One-click run
 
 ### Linux/macOS
 ```bash
-git clone https://github.com/hwkim3330/openai.git
-cd openai
 bash scripts/oneclick.sh
 ```
 
 ### Windows (PowerShell)
 ```powershell
-git clone https://github.com/hwkim3330/openai.git
-cd openai
 powershell -ExecutionPolicy Bypass -File .\scripts\oneclick.ps1
 ```
 
@@ -46,63 +29,36 @@ Telegram one-click:
 - Linux/macOS: `bash scripts/oneclick.sh telegram`
 - Windows: `powershell -ExecutionPolicy Bypass -File .\scripts\oneclick.ps1 telegram`
 
-## Manual quick start
+## Basic commands
+- `help`
+- `weather: Seoul`
+- `traffic: Seoul Station -> Incheon Airport`
+- `stock: aapl.us,msft.us`
+- `browse: https://pollinations.ai`
 
-### Linux/macOS
+## Checks
 ```bash
-git clone https://github.com/hwkim3330/openai.git
-cd openai
-bash scripts/install.sh
-cp .env.example .env
-npm start
+npm run check
+npm run smoke
 ```
 
-### Windows (PowerShell)
-```powershell
-git clone https://github.com/hwkim3330/openai.git
-cd openai
-powershell -ExecutionPolicy Bypass -File .\scripts\install.ps1
-copy .env.example .env
-npm start
+## Docs
+- [Documentation Index](docs/README.md)
+- [Quickstart](docs/QUICKSTART.md)
+- [Architecture](docs/ARCHITECTURE.md)
+- [Commands](docs/COMMANDS.md)
+- [Operations](docs/OPERATIONS.md)
+- [GitHub Pages](docs/PAGES.md)
+
+## GitHub Pages
+- Site source: `docs/index.html`
+- Auto deploy workflow: `.github/workflows/pages.yml`
+- Target URL: `https://hwkim3330.github.io/openai/`
+
+## Security note
+For production Telegram use, set at least:
+```env
+TELEGRAM_BOT_TOKEN=...
+TELEGRAM_ALLOWED_USER_IDS=8341524797
+TELEGRAM_COMMAND_PREFIX=!
 ```
-
-## CLI command examples
-```text
-stock: AAPL,MSFT,005930.KS
-weather: Seoul
-weather: 37.56,126.97
-traffic: Seoul Station -> Incheon Airport
-browse: https://pollinations.ai
-```
-
-## Telegram mode
-1. Put bot token in `.env` (`TELEGRAM_BOT_TOKEN=...`)
-2. Run:
-```bash
-npm run telegram
-```
-
-### Telegram hardening
-- `TELEGRAM_ALLOWED_USER_IDS=123456789,987654321`
-- `TELEGRAM_COMMAND_PREFIX=!`
-- `TELEGRAM_LOCK_PATH=/tmp/openai-agent-telegram.lock`
-
-Behavior:
-- If allowlist is set, only listed users can execute commands.
-- If prefix is set, only prefixed messages are handled.
-- Lock file prevents duplicate long-polling workers on one token.
-
-## Advanced config later
-Initial run works with default free providers.  
-For production/harder access control, edit `.env`:
-- `TELEGRAM_BOT_TOKEN`
-- `TELEGRAM_ALLOWED_USER_IDS`
-- `TELEGRAM_COMMAND_PREFIX`
-- `TELEGRAM_LOCK_PATH`
-- `BROWSER_HEADLESS`, `BROWSER_TIMEOUT_MS`
-- `POLLINATIONS_*`
-
-## API notes
-- Stock endpoint uses Stooq daily quotes (free/no-key).
-- Traffic output is route ETA estimate from OSRM, not full incident feed.
-- All built-ins are zero-key defaults for easy first-run onboarding.
