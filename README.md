@@ -15,7 +15,27 @@ OpenClaw 스타일의 경량 구조(`channels/providers/runtime/adapters`)를 �
 - `traffic:` OSM Nominatim + OSRM route ETA (no-key)
 - `browse:` Playwright browser text extraction
 
-## Quick start
+## One-click start (recommended)
+
+### Linux/macOS
+```bash
+git clone https://github.com/hwkim3330/openai.git
+cd openai
+bash scripts/oneclick.sh
+```
+
+### Windows (PowerShell)
+```powershell
+git clone https://github.com/hwkim3330/openai.git
+cd openai
+powershell -ExecutionPolicy Bypass -File .\scripts\oneclick.ps1
+```
+
+Telegram one-click:
+- Linux/macOS: `bash scripts/oneclick.sh telegram`
+- Windows: `powershell -ExecutionPolicy Bypass -File .\scripts\oneclick.ps1 telegram`
+
+## Manual quick start
 
 ### Linux/macOS
 ```bash
@@ -61,7 +81,17 @@ Behavior:
 - If prefix is set, only prefixed messages are handled.
 - Lock file prevents duplicate long-polling workers on one token.
 
+## Advanced config later
+Initial run works with default free providers.  
+For production/harder access control, edit `.env`:
+- `TELEGRAM_BOT_TOKEN`
+- `TELEGRAM_ALLOWED_USER_IDS`
+- `TELEGRAM_COMMAND_PREFIX`
+- `TELEGRAM_LOCK_PATH`
+- `BROWSER_HEADLESS`, `BROWSER_TIMEOUT_MS`
+- `POLLINATIONS_*`
+
 ## API notes
-- Stock endpoint is unofficial Yahoo public quote API.
+- Stock endpoint uses Stooq daily quotes (free/no-key).
 - Traffic output is route ETA estimate from OSRM, not full incident feed.
 - All built-ins are zero-key defaults for easy first-run onboarding.

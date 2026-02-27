@@ -12,7 +12,13 @@ if ! command -v npm >/dev/null 2>&1; then
 fi
 
 npm install
-npx playwright install chromium
 npm run setup:env
 
-echo "Install complete. Run: npm start"
+echo
+if [ "${1:-}" = "telegram" ]; then
+  echo "Starting Telegram mode..."
+  npm run telegram
+else
+  echo "Starting CLI mode..."
+  npm start
+fi

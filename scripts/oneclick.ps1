@@ -11,7 +11,13 @@ if (-not (Get-Command npm -ErrorAction SilentlyContinue)) {
 }
 
 npm install
-npx playwright install chromium
 npm run setup:env
 
-Write-Output "Install complete. Run: npm start"
+Write-Output ""
+if ($args.Length -gt 0 -and $args[0] -eq "telegram") {
+  Write-Output "Starting Telegram mode..."
+  npm run telegram
+} else {
+  Write-Output "Starting CLI mode..."
+  npm start
+}

@@ -8,6 +8,9 @@
   "scripts": {
     "start": "node src/main.js --mode cli",
     "telegram": "node src/main.js --mode telegram",
+    "setup:env": "node scripts/setup-env.mjs",
+    "quickstart": "npm run setup:env && npm start",
+    "quickstart:telegram": "npm run setup:env && npm run telegram",
     "postinstall": "playwright install chromium"
   },
   "engines": {
